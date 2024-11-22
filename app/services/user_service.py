@@ -60,8 +60,10 @@ class UserService:
             validated_data['hashed_password'] = hash_password(validated_data.pop('password'))
             new_user = User(**validated_data)
             new_user.verification_token = generate_verification_token()
-            new_nickname = generate_nickname()
+           
+            new_nickname = validated_data.get('nickname')
             while await cls.get_by_nickname(session, new_nickname):
+                logger.error("User with given nickname already existed. Generating random one.")
                 new_nickname = generate_nickname()
             new_user.nickname = new_nickname
             session.add(new_user)

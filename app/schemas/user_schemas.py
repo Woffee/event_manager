@@ -22,15 +22,30 @@ def validate_url(url: Optional[str]) -> Optional[str]:
         raise ValueError('Invalid URL format')
     return url
 
+def validate_nickname(nickname: Optional[str]) -> Optional[str]:
+    if nickname is None:
+        return nickname
+    
+    if len(nickname) < 3 or len(nickname) > 20:
+        raise ValueError(f"Nickname must be between 3 and 20 characters.")
+
+    nickname_regex = r'^[a-z0-9_-]+$'
+    if not re.match(nickname_regex, nickname):
+        raise ValueError("Nickname can only contain lowercase letters, numbers, underscores, and hyphens.")
+
+    return nickname
+
 class UserBase(BaseModel):
     email: EmailStr = Field(..., example="john.doe@example.com")
-    nickname: Optional[str] = Field(None, min_length=3, pattern=r'^[\w-]+$', example=generate_nickname())
+    nickname: Optional[str] = Field(None, example=generate_nickname())
     first_name: Optional[str] = Field(None, example="John")
     last_name: Optional[str] = Field(None, example="Doe")
     bio: Optional[str] = Field(None, example="Experienced software developer specializing in web applications.")
     profile_picture_url: Optional[str] = Field(None, example="https://example.com/profiles/john.jpg")
     linkedin_profile_url: Optional[str] =Field(None, example="https://linkedin.com/in/johndoe")
     github_profile_url: Optional[str] = Field(None, example="https://github.com/johndoe")
+
+    _validate_nickname = validator('nickname', pre=True, allow_reuse=True)(validate_nickname)
 
     _validate_urls = validator('profile_picture_url', 'linkedin_profile_url', 'github_profile_url', pre=True, allow_reuse=True)(validate_url)
  
