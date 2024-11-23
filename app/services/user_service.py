@@ -50,6 +50,10 @@ class UserService:
         return await cls._fetch_user(session, email=email)
 
     @classmethod
+    async def get_by_username(cls, session: AsyncSession, nickname: str) -> Optional[User]:
+        return await cls._fetch_user(session, nickname=nickname)
+
+    @classmethod
     async def create(cls, session: AsyncSession, user_data: Dict[str, str], email_service: EmailService) -> Optional[User]:
         try:
             validated_data = UserCreate(**user_data).model_dump()
@@ -120,7 +124,12 @@ class UserService:
 
     @classmethod
     async def login_user(cls, session: AsyncSession, email: str, password: str) -> Optional[User]:
-        user = await cls.get_by_email(session, email)
+
+        if ('@' in email):
+            user = await cls.get_by_email(session, email)
+        else: #else its a nickname/username
+            user = await cls.get_by_nickname(session, email)
+
         if user:
             if user.email_verified is False:
                 return None
