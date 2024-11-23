@@ -35,6 +35,33 @@ def validate_nickname(nickname: Optional[str]) -> Optional[str]:
 
     return nickname
 
+def validate_password(password: str) -> str:
+    if len(password) < 8:
+        raise ValueError("Password must be at least 8 characters long.")
+    
+    has_uppercase = False
+    has_lowercase = False
+    for i in password:
+        if i.isupper():
+            has_uppercase = True
+        if i.islower():
+            has_lowercase = True
+        if has_lowercase and has_uppercase:
+            break
+    
+    if not has_uppercase or not has_lowercase:
+        raise ValueError("Password must contain at least one uppercase and lowercase letter.")
+    
+    has_digit = False
+    for i in password:
+        if i.isdigit():
+            has_digit = True
+            break
+    if not has_digit:
+        raise ValueError("Password must contain at least one number.")
+        
+    return password
+
 class UserBase(BaseModel):
     email: EmailStr = Field(..., example="john.doe@example.com")
     nickname: Optional[str] = Field(None, example=generate_nickname())
@@ -55,6 +82,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     email: EmailStr = Field(..., example="john.doe@example.com")
     password: str = Field(..., example="Secure*1234")
+    _validate_password = validator('password', pre=True, allow_reuse=True)(validate_password)
 
 class UserUpdate(UserBase):
     email: Optional[EmailStr] = Field(None, example="john.doe@example.com")
