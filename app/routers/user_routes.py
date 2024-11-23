@@ -212,7 +212,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Async
         )
 
         return {"access_token": access_token, "token_type": "bearer"}
-    raise HTTPException(status_code=401, detail="The email or password is incorrect, the email is not verified, or the account is locked.")
+    raise HTTPException(status_code=401, detail="The email/username or password is incorrect, the email is not verified, or the account is locked.")
 
 @router.post("/login/", include_in_schema=False, response_model=TokenResponse, tags=["Login and Registration"])
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_db)):
@@ -229,7 +229,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Async
         )
 
         return {"access_token": access_token, "token_type": "bearer"}
-    raise HTTPException(status_code=401, detail="The email or password is incorrect, the email is not verified, or the account is locked.")
+    raise HTTPException(status_code=401, detail="The email/username or password is incorrect, the email is not verified, or the account is locked.")
 
 
 @router.get("/verify-email/{user_id}/{token}", status_code=status.HTTP_200_OK, name="verify_email", tags=["Login and Registration"])
