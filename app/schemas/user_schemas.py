@@ -22,6 +22,26 @@ def validate_url(url: Optional[str]) -> Optional[str]:
         raise ValueError('Invalid URL format')
     return url
 
+def github_validate_url(url: Optional[str]) -> Optional[str]:
+    if url is None:
+        return url
+    github_url_regex = r'^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9-_]+\/?$'
+
+    if not re.match(github_url_regex, url):
+        raise ValueError('Invalid GitHub profile URL. It should match: https://github.com/<username>.')
+    
+    return url
+
+def linkedin_validate_url(url: Optional[str]) -> Optional[str]:
+    if url is None:
+        return url
+    linkedin_url_regex = r'^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-_]+\/?$'
+
+    if not re.match(linkedin_url_regex, url):
+        raise ValueError('Invalid LinkedIn profile URL. It should match: https://linkedin.com/in/<username>.')
+    
+    return url
+
 def validate_nickname(nickname: Optional[str]) -> Optional[str]:
     if nickname is None:
         return nickname
@@ -34,6 +54,33 @@ def validate_nickname(nickname: Optional[str]) -> Optional[str]:
         raise ValueError("Nickname can only contain lowercase letters, numbers, underscores, and hyphens.")
 
     return nickname
+
+def validate_password(password: str) -> str:
+    if len(password) < 8:
+        raise ValueError("Password must be at least 8 characters long.")
+    
+    has_uppercase = False
+    has_lowercase = False
+    for i in password:
+        if i.isupper():
+            has_uppercase = True
+        if i.islower():
+            has_lowercase = True
+        if has_lowercase and has_uppercase:
+            break
+    
+    if not has_uppercase or not has_lowercase:
+        raise ValueError("Password must contain at least one uppercase and lowercase letter.")
+    
+    has_digit = False
+    for i in password:
+        if i.isdigit():
+            has_digit = True
+            break
+    if not has_digit:
+        raise ValueError("Password must contain at least one number.")
+        
+    return password
 
 def get_random_nickname() -> str:
     return generate_nickname()
@@ -53,13 +100,16 @@ class UserBase(BaseModel):
     _validate_nickname = validator('nickname', pre=True, allow_reuse=True)(validate_nickname)
 
     _validate_urls = validator('profile_picture_url', 'linkedin_profile_url', 'github_profile_url', pre=True, allow_reuse=True)(validate_url)
- 
+    _validate_github_url = validator('github_profile_url', pre=True, allow_reuse=True)(github_validate_url)
+    _validate_linkedin_url = validator('linkedin_profile_url', pre=True, allow_reuse=True)(linkedin_validate_url)
+
     class Config:
         from_attributes = True
 
 class UserCreate(UserBase):
     email: EmailStr = Field(..., example="john.doe@example.com")
     password: str = Field(..., example="Secure*1234")
+    _validate_password = validator('password', pre=True, allow_reuse=True)(validate_password)
 
 class UserUpdate(UserBase):
     email: Optional[EmailStr] = Field(None, example="john.doe@example.com")
