@@ -22,6 +22,26 @@ def validate_url(url: Optional[str]) -> Optional[str]:
         raise ValueError('Invalid URL format')
     return url
 
+def github_validate_url(url: Optional[str]) -> Optional[str]:
+    if url is None:
+        return url
+    github_url_regex = r'^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9-_]+\/?$'
+
+    if not re.match(github_url_regex, url):
+        raise ValueError('Invalid GitHub profile URL. It should match: https://github.com/<username>.')
+    
+    return url
+
+def linkedin_validate_url(url: Optional[str]) -> Optional[str]:
+    if url is None:
+        return url
+    linkedin_url_regex = r'^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-_]+\/?$'
+
+    if not re.match(linkedin_url_regex, url):
+        raise ValueError('Invalid LinkedIn profile URL. It should match: https://linkedin.com/in/<username>.')
+    
+    return url
+
 def validate_nickname(nickname: Optional[str]) -> Optional[str]:
     if nickname is None:
         return nickname
@@ -75,7 +95,9 @@ class UserBase(BaseModel):
     _validate_nickname = validator('nickname', pre=True, allow_reuse=True)(validate_nickname)
 
     _validate_urls = validator('profile_picture_url', 'linkedin_profile_url', 'github_profile_url', pre=True, allow_reuse=True)(validate_url)
- 
+    _validate_github_url = validator('github_profile_url', pre=True, allow_reuse=True)(github_validate_url)
+    _validate_linkedin_url = validator('linkedin_profile_url', pre=True, allow_reuse=True)(linkedin_validate_url)
+
     class Config:
         from_attributes = True
 
