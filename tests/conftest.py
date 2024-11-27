@@ -241,6 +241,7 @@ def user_create_data(user_base_data):
 @pytest.fixture
 def user_update_data():
     return {
+        "first_name": "John",
         "email": "john.doe.new@example.com",
         "full_name": "John H. Doe",
         "bio": "I specialize in backend development with Python and Node.js.",
