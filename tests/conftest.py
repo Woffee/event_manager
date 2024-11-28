@@ -216,6 +216,7 @@ async def manager_user(db_session: AsyncSession):
 def user_base_data():
     return {
         "username": "john_doe_123",
+        "nickname": "john_doe",
         "email": "john.doe@example.com",
         "full_name": "John Doe",
         "bio": "I am a software engineer with over 5 years of experience.",
@@ -242,6 +243,7 @@ def user_update_data():
     return {
         "email": "john.doe.new@example.com",
         "full_name": "John H. Doe",
+        "first_name": "John",
         "bio": "I specialize in backend development with Python and Node.js.",
         "profile_picture_url": "https://example.com/profile_pictures/john_doe_updated.jpg"
     }

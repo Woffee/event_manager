@@ -115,6 +115,37 @@ Additionally, you will resolve a sixth issue demonstrated in the instructor vide
 
 ## Submission Requirements
 
+### CLOSED ISSUES ###
+
+1. **Issues in docker compose preventing succesful application build**
+   https://github.com/AlexandersWrld/eventmanager/issues/1
+
+2. **Nickname is user registration does not match output**
+  https://github.com/AlexandersWrld/eventmanager/issues/2
+
+3. **User log in test assertation unsucceesful**
+  https://github.com/AlexandersWrld/eventmanager/issues/3
+
+4. **KeyError in User Schema Test**
+  https://github.com/AlexandersWrld/eventmanager/issues/7
+
+5. **Error in user update test - KeyError (first_name)**
+  https://github.com/AlexandersWrld/eventmanager/issues/9
+
+6. **Error in user login with incorrect password test**
+  https://github.com/AlexandersWrld/eventmanager/issues/11 
+
+## Reflection ## 
+This assignment helped me get a better understanding of what it's like to work with a larger-scale project in a collaberative environment. I understand now the real purpose behind forking code from a repository, to create my own local copy of the repo. At first when I just started the assignment I was making pull requests to the main repo rather than to my fork. It took me two tries to get it right but I eventually caught the hang of the correct workflow. Through the creation of issues and through branching, I understand better now how to make clean changes without affecting the main repo.
+I came to realize that in the case of making pull requests, that I would not be authorized to pull directly to the main repo, and that my requests were more mere suggesttions. This has given me some idea of what it might be like working with a team as a junior analyst. I'd imagine the senior analysts would be the ones approving my changes. 
+
+
+## Project Image on Docker ##
+
+![alt text](<Screenshot (388).png>)
+
+
+## Instructions ## 
 To complete this assignment, submit the following:
 
 1. **GitHub Repository Link**: Ensure that your repository is well-organized and includes:
