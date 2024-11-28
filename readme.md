@@ -115,6 +115,26 @@ Additionally, you will resolve a sixth issue demonstrated in the instructor vide
 
 ## Submission Requirements
 
+### CLOSED ISSUES ###
+
+1. **Issues in docker compose preventing succesful application build**
+   https://github.com/AlexandersWrld/eventmanager/issues/1
+
+2. **Nickname is user registration does not match output**
+  https://github.com/AlexandersWrld/eventmanager/issues/2
+
+3. **User log in test assertation unsucceesful**
+  https://github.com/AlexandersWrld/eventmanager/issues/3
+
+4. **KeyError in User Schema Test**
+  https://github.com/AlexandersWrld/eventmanager/issues/7
+
+5. **Error in user update test - KeyError (first_name)**
+  https://github.com/AlexandersWrld/eventmanager/issues/9
+
+6. **Error in user login with incorrect password test**
+  https://github.com/AlexandersWrld/eventmanager/issues/11 
+
 To complete this assignment, submit the following:
 
 1. **GitHub Repository Link**: Ensure that your repository is well-organized and includes:
