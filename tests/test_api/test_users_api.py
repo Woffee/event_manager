@@ -112,7 +112,7 @@ async def test_login_user_not_found(async_client):
     }
     response = await async_client.post("/login/", data=urlencode(form_data), headers={"Content-Type": "application/x-www-form-urlencoded"})
     assert response.status_code == 401
-    assert "Incorrect email or password." in response.json().get("detail", "")
+    assert "The email or password is incorrect, the email is not verified, or the account is locked." in response.json().get("detail", "")
 
 @pytest.mark.asyncio
 async def test_login_incorrect_password(async_client, verified_user):
