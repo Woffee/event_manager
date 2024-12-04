@@ -82,6 +82,15 @@ async def setup_database():
          await conn.run_sync(Base.metadata.drop_all)
     await engine.dispose()
 
+from app.services.jwt_service import create_access_token
+import pytest
+
+@pytest.fixture(scope="function")
+async def admin_token(admin_user, db_session):
+    """Fixture to generate an authentication token for the admin user."""
+    token = create_access_token(user_id=str(admin_user.id), role=admin_user.role)
+    return token
+
 @pytest.fixture(scope="function")
 async def db_session(setup_database):
     async with AsyncSessionScoped() as session:
@@ -195,6 +204,8 @@ async def admin_user(db_session: AsyncSession):
     await db_session.commit()
     return user
 
+
+
 @pytest.fixture
 async def manager_user(db_session: AsyncSession):
     user = User(
@@ -219,7 +230,8 @@ def user_base_data():
         "email": "john.doe@example.com",
         "full_name": "John Doe",
         "bio": "I am a software engineer with over 5 years of experience.",
-        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg"
+        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg",
+        "nickname": "John"
     }
 
 @pytest.fixture
@@ -229,13 +241,14 @@ def user_base_data_invalid():
         "email": "john.doe.example.com",
         "full_name": "John Doe",
         "bio": "I am a software engineer with over 5 years of experience.",
-        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg"
+        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg",
+        "nickname": "John"
     }
 
 
 @pytest.fixture
 def user_create_data(user_base_data):
-    return {**user_base_data, "password": "SecurePassword123!"}
+    return {**user_base_data, "password": "SecurePassword123!", "nickname": "Doe"}
 
 @pytest.fixture
 def user_update_data():
@@ -243,13 +256,19 @@ def user_update_data():
         "email": "john.doe.new@example.com",
         "full_name": "John H. Doe",
         "bio": "I specialize in backend development with Python and Node.js.",
-        "profile_picture_url": "https://example.com/profile_pictures/john_doe_updated.jpg"
+        "profile_picture_url": "https://example.com/profile_pictures/john_doe_updated.jpg",
+        "first_name": "John"
     }
+
+import uuid
+import pytest
+from datetime import datetime
+
 
 @pytest.fixture
 def user_response_data():
     return {
-        "id": "unique-id-string",
+        "id": str(uuid.uuid4()),  #unique-id-string
         "username": "testuser",
         "email": "test@example.com",
         "last_login_at": datetime.now(),
@@ -260,4 +279,4 @@ def user_response_data():
 
 @pytest.fixture
 def login_request_data():
-    return {"username": "john_doe_123", "password": "SecurePassword123!"}
+    return {"username": "john_doe_123", "password": "SecurePassword123!", "email": "johndoe@example.com"}
