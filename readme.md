@@ -62,7 +62,7 @@ docker compose exec fastapi alembic revision --autogenerate -m 'added admin'
 ### Apply database migrations:
 
 ```
-docker compose exec fastapi alembic upgrade head
+docker compose exec fastapi alembic upgrade head 
 ```
 
 ## Assignment Objectives
